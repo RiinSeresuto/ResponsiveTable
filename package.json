@@ -1,0 +1,16 @@
+{
+  "name": "responsive-table",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch:sass": "sass  --no-source-map --watch src/sass:public/css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.13.1",
+  "devDependencies": {
+    "sass": "^1.89.2"
+  }
+}
