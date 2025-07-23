@@ -30,7 +30,9 @@ class ResponsiveTable {
 
     setup() {
         this.update();
-        this.setupExpandButtons();
+
+        // this.setupExpandButtons();
+
         window.addEventListener("resize", () => this.update());
     }
 
@@ -63,14 +65,60 @@ class ResponsiveTable {
         </svg>`;
 
         buttonCell.forEach((cell) => {
+            const id = this.nanoid();
             var text = cell.innerHTML;
             var attribute = cell.getAttribute("data-toggle");
 
             if (!attribute) {
                 cell.setAttribute("data-toggle", true);
-                cell.innerHTML = `${icon} ${text}`;
+                cell.innerHTML = `<span data-id="${id}">${icon}</span> ${text}`;
+
+                this.addDetailsRow(cell, id);
+            }
+
+            const trigger = cell.querySelector(`span[data-id="${id}"]`);
+            if (trigger) {
+                trigger.addEventListener("click", () => this.toggleDetails(id));
             }
         });
+    }
+
+    addDetailsRow(cell, id) {
+        const row = cell.closest("tr");
+
+        var colSpan = 0;
+
+        Array.from(row.children).forEach((cell) => {
+            colSpan += cell.colSpan;
+        });
+
+        var newCell = document.createElement("td");
+        newCell.setAttribute("colspan", colSpan);
+        newCell.innerHTML = this.detailsContent(row.children);
+
+        var newRow = document.createElement("tr");
+        newRow.appendChild(newCell);
+        newRow.classList.add("hide");
+        newRow.id = id;
+
+        row.parentNode.insertBefore(newRow, row.nextSibling);
+    }
+
+    detailsContent(rowCells) {
+        const cells = Array.from(rowCells);
+
+        var contentLine = "";
+
+        cells.forEach((cell) => {
+            if (cell.classList.contains("hide")) {
+                var label = cell.getAttribute("data-label") || "";
+                var content = cell.innerHTML;
+
+                contentLine += `<div class="responsivetable__details--info"><div><strong>${label}</strong></div> <div>${content}</div></div>`;
+            }
+        });
+
+        return `<div class="responsivetable__details--card">${contentLine}</div>`;
     }
 
     toggleColumn(index, hide) {
@@ -80,48 +128,24 @@ class ResponsiveTable {
             const cell = row.children[index];
 
             if (cell) {
-                cell.classList.toggle("hidden-col", hide);
+                cell.classList.toggle("hide", hide);
             }
         });
     }
 
-    setupExpandButtons() {
-        const bodyRows = Array.from(this.table.tBodies[0].rows);
-        bodyRows.forEach((row, index) => {
-            const btn = row.querySelector(".expand-btn");
-            if (btn) {
-                btn.addEventListener("click", () => this.toggleDetails(row));
-            }
-        });
+    toggleDetails(id) {
+        const tr = document.getElementById(id);
+
+        tr.classList.toggle("hide");
     }
 
-    toggleDetails(row) {
-        const nextRow = row.nextElementSibling;
-        if (nextRow && nextRow.classList.contains("details-row")) {
-            nextRow.remove();
-            return;
+    nanoid(size = 21) {
+        const chars =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-";
+        let id = "";
+        for (let i = 0; i < size; i++) {
+            id += chars.charAt(Math.floor(Math.random() * chars.length));
         }
-
-        const detailRow = document.createElement("tr");
-        detailRow.className = "details-row";
-        const td = document.createElement("td");
-        td.colSpan = this.headers.length;
-
-        const hiddenData = [];
-        const cells = row.children;
-        this.priorityMap.forEach((col) => {
-            const cell = cells[col.index];
-            if (cell && cell.classList.contains("hidden-col")) {
-                const label = this.headers[col.index].textContent.trim();
-                const value = cell.textContent.trim();
-                hiddenData.push(`<strong>${label}:</strong> ${value}`);
-            }
-        });
-
-        td.innerHTML = hiddenData.length
-            ? hiddenData.join("<br>")
-            : "<em>No hidden data</em>";
-        detailRow.appendChild(td);
-        row.after(detailRow);
+        return id;
     }
 }

@@ -1,7 +1,35 @@
-body{
-    background-color: red;
+.hide {
+    display: none;
+}
 
-    .container, .table{
-        width: 80%;
+.details-row {
+    background-color: #f9f9f9;
+}
+
+.expand-btn {
+    cursor: pointer;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.3rem 0.5rem;
+    border-radius: 3px;
+}
+
+.responsivetable{
+    &__details{
+        &--card{
+            padding: 1rem;
+            font-size: 0.8rem;
+        }
+
+        &--info{
+            display: flex;
+            justify-content: space-between;
+            padding: 0.25rem 0;
+
+            &:not(:last-child){
+                border-bottom: 1px dashed rgba(0, 0, 0, 0.5);
+            }
+        }
     }
 }

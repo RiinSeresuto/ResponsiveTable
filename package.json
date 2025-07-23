@@ -8,7 +8,7 @@
     "sass": "sass src/scss:public/css",
     "prefix": "postcss src/css/*.css --dir src/css",
     "build": "pnpm run sass && pnpm run prefix",
-    "watch": "chokidar 'src/sass/**/*.scss' -c 'pnpm run build'"
+    "watch": "chokidar 'src/scss/**/*.scss' -c 'pnpm run build'"
   },
   "keywords": [],
   "author": "",
