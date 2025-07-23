@@ -4,13 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch:sass": "sass  --no-source-map --watch src/scss:public/css"
+    "watch:sass": "sass  --no-source-map --watch src/scss:public/css",
+    "sass": "sass src/scss:public/css",
+    "prefix": "postcss src/css/*.css --dir src/css",
+    "build": "pnpm run sass && pnpm run prefix",
+    "watch": "chokidar 'src/sass/**/*.scss' -c 'pnpm run build'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.13.1",
   "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "chokidar-cli": "^3.0.0",
+    "postcss": "^8.5.6",
     "sass": "^1.89.2"
   }
 }
