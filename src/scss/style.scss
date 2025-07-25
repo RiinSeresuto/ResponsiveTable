@@ -1,33 +1,72 @@
-.hide {
-    display: none;
+body {
+    background-color: rgb(181, 181, 181) !important;
 }
 
-.details-row {
-    background-color: #f9f9f9;
-}
+.responsivetable {
+    width: 100%;
 
-.expand-btn {
-    cursor: pointer;
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 0.3rem 0.5rem;
-    border-radius: 3px;
-}
+    .hide {
+        display: none;
+    }
 
-.responsivetable{
-    &__details{
-        &--card{
+    td,
+    th {
+        vertical-align: middle;
+        margin-bottom: 10px;
+        border: none;
+    }
+
+    thead {
+        background-color: rgba(255, 255, 255, 0);
+        margin-bottom: 1rem;
+
+        tr {
+            tr,
+            th {
+                border: none;
+                font-size: 12px;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                background: transparent;
+
+                a {
+                    text-decoration: none;
+                    color: black;
+                }
+            }
+        }
+    }
+
+    tbody {
+        display: table-row-group;
+        vertical-align: middle;
+        unicode-bidi: isolate;
+        border-color: inherit;
+
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            unicode-bidi: isolate;
+            border-color: inherit;
+
+            td {
+                background-color: #fff;
+            }
+        }
+    }
+
+    &__details {
+        &--card {
             padding: 1rem;
             font-size: 0.8rem;
         }
 
-        &--info{
+        &--info {
             display: flex;
             justify-content: space-between;
             padding: 0.25rem 0;
 
-            &:not(:last-child){
+            &:not(:last-child) {
                 border-bottom: 1px dashed rgba(0, 0, 0, 0.5);
             }
         }
