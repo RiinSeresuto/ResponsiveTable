@@ -99,6 +99,7 @@ class ResponsiveTable {
         var newRow = document.createElement("tr");
         newRow.appendChild(newCell);
         newRow.classList.add("hide");
+        newRow.classList.add("detailRow");
         newRow.id = id;
 
         row.parentNode.insertBefore(newRow, row.nextSibling);
