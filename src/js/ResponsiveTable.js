@@ -33,9 +33,6 @@ class ResponsiveTable {
 
 	setup() {
 		this.update();
-
-		// this.setupExpandButtons();
-
 		window.addEventListener("resize", () => this.update());
 	}
 
@@ -47,33 +44,37 @@ class ResponsiveTable {
 			width > 900 ? 0 : width > 700 ? 1 : width > 500 ? 2 : 3;
 
 		this.priorityMap.forEach((col, i) => {
-			const shouldHide = i >= this.priorityMap.length - hideCount;
+			const shouldHide =
+				i >= this.priorityMap.length - hideCount && col.index !== 0;
 
 			this.toggleColumn(col.index, shouldHide);
 
 			setupToggleButton = shouldHide;
 		});
 
-		if (hideCount > 0) {
-			this.addButton();
-		}
+		hideCount > 0 ? this.addButton() : this.removeButton();
 	}
 
 	addButton() {
 		const buttonCell = document.querySelectorAll('td[tabindex="0"]');
-		const icon = '<i data-lucide="circle-plus"></i>';
+		const icon =
+			'<i data-lucide="circle-plus" class="responsivetable--icon"></i>';
 
 		buttonCell.forEach((cell) => {
 			const id = nanoid();
-			var text = cell.innerHTML;
+			var htmlContent = cell.innerHTML;
 			var attribute = cell.getAttribute("data-toggle");
 
 			if (!attribute) {
 				cell.setAttribute("data-toggle", true);
-				cell.innerHTML = `<span data-id="${id}">${icon}</span> ${text}`;
-
-				this.addDetailsRow(cell, id);
+				cell.innerHTML = `
+					<div class='responsivetable--leadingcolumn-container'>
+						<span data-id="${id}">${icon}</span>
+						<div class="responsivetable--leadingcolumn-content">${htmlContent}</div>
+					</div>`;
 			}
+
+			this.addDetailsRow(cell, id);
 
 			this.generateIcon();
 
@@ -83,6 +84,26 @@ class ResponsiveTable {
 				trigger.style.cursor = "pointer";
 
 				trigger.addEventListener("click", () => this.toggleDetails(id));
+			}
+		});
+	}
+
+	removeButton() {
+		const buttonCell = document.querySelectorAll('td[tabindex="0"]');
+
+		buttonCell.forEach((cell) => {
+			if (cell.getAttribute("data-toggle")) {
+				const attribute = cell.getAttribute("data-toggle");
+				const id = cell.querySelector("span").getAttribute("data-id");
+
+				if (attribute) {
+					cell.removeAttribute("data-toggle");
+					cell.innerHTML = cell.querySelector(
+						".responsivetable--leadingcolumn-content"
+					).innerHTML;
+
+					this.removeDetailsRow(id);
+				}
 			}
 		});
 	}
@@ -98,6 +119,7 @@ class ResponsiveTable {
 
 		var newCell = document.createElement("td");
 		newCell.setAttribute("colspan", colSpan);
+		newCell.innerHTML = "";
 		newCell.innerHTML = this.detailsContent(row.children);
 
 		var newRow = document.createElement("tr");
@@ -109,12 +131,18 @@ class ResponsiveTable {
 		row.parentNode.insertBefore(newRow, row.nextSibling);
 	}
 
-	detailsContent(rowCells) {
-		const cells = Array.from(rowCells);
+	removeDetailsRow(id) {
+		const row = document.getElementById(id);
 
+		if (row) {
+			row.remove();
+		}
+	}
+
+	detailsContent(rowCells) {
 		var contentLine = "";
 
-		cells.forEach((cell) => {
+		Array.from(rowCells).forEach((cell) => {
 			if (cell.classList.contains("hide")) {
 				var label = cell.getAttribute("data-label") || "";
 				var content = cell.innerHTML;
@@ -143,8 +171,23 @@ class ResponsiveTable {
 
 		tr.classList.toggle("hide");
 
-		// get the span data-id here to replace the icon
-		//const span = element.dataset.dataId;
+		const element = document.querySelector(`[data-id="${id}"]`);
+
+		if (element.firstChild.dataset.lucide == "circle-plus") {
+			element.removeChild(element.firstChild);
+
+			element.innerHTML =
+				'<i data-lucide="circle-minus" class="responsivetable--icon"></i>';
+
+			this.generateIcon();
+		} else {
+			element.removeChild(element.firstChild);
+
+			element.innerHTML =
+				'<i data-lucide="circle-plus" class="responsivetable--icon"></i>';
+
+			this.generateIcon();
+		}
 	}
 
 	generateIcon() {
