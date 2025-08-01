@@ -3,13 +3,19 @@ import path from "path";
 
 export default defineConfig({
 	build: {
-		lib: {
-			entry: path.resolve(__dirname, "src/js/ResponsiveTable.js"),
-			name: "ResponsiveTable",
-			fileName: () => `ResponsiveTable.js`,
-			formats: ["iife"],
+		rollupOptions: {
+			input: path.resolve(__dirname, "src/main.js"), // Your main entry point
+			output: {
+				entryFileNames: "js/app.bundle.js",
+				assetFileNames: (assetInfo) => {
+					if (assetInfo.name && assetInfo.name.endsWith(".css")) {
+						return "css/app.styles.css"; // Move CSS to /css
+					}
+					return "[name][extname]";
+				},
+			},
 		},
-		outDir: "public/js",
+		outDir: "public",
 		emptyOutDir: true,
 	},
 });
