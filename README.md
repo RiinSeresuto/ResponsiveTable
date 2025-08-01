@@ -1,6 +1,6 @@
 # Responsive Table
 
-Smol JavaScript Library to make HTML Tables responsive.
+✨Smol✨ JavaScript Library to make HTML Tables responsive.
 
 ## Requirements
 
