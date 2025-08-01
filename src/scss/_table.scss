@@ -1,0 +1,126 @@
+@use "./variables" as vars;
+
+.grid-view {
+	.summary {
+		text-align: center;
+		font-size: vars.$fontSize;
+	}
+}
+
+.responsivetable {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0 0.5rem;
+	font-family: "Open Sans", sans-serif;
+
+	.hide {
+		display: none;
+	}
+
+	&--icon {
+		width: vars.$iconSize;
+		height: vars.$iconSize;
+	}
+
+	&--leadingcolumn {
+		&-container {
+			display: flex;
+			justify-content: left;
+			align-items: center;
+			height: 100%;
+			gap: 0.5rem;
+		}
+	}
+
+	td,
+	th {
+		font-style: normal;
+		font-size: vars.$fontSize;
+		line-height: 21px;
+		color: vars.$fontColor;
+		padding: 0.5rem 1rem !important;
+
+		a {
+			font-size: vars.$fontSize;
+			color: vars.$fontLinkColor;
+			text-decoration: none;
+			font-weight: normal;
+		}
+	}
+
+	thead {
+		background-color: rgba(255, 255, 255, 0);
+		margin-bottom: 1rem;
+
+		tr {
+			tr,
+			th {
+				a {
+					text-decoration: none;
+					color: vars.$fontColor;
+
+					font-weight: 600;
+					border: none;
+					letter-spacing: 1px;
+					text-transform: uppercase;
+					background: transparent;
+
+					display: flex;
+					justify-content: space-between;
+					width: 100%;
+				}
+			}
+		}
+	}
+
+	tbody {
+		display: table-row-group;
+		vertical-align: middle;
+		unicode-bidi: isolate;
+		border-color: inherit;
+
+		tr {
+			display: table-row;
+			vertical-align: inherit;
+			unicode-bidi: isolate;
+			border-color: inherit;
+
+			td {
+				background-color: #fff;
+				padding: 0.5rem 1.5rem;
+				height: 100%;
+			}
+
+			td:first-child {
+				border-radius: vars.$borderRadius 0 0 vars.$borderRadius;
+			}
+
+			td:last-child {
+				border-radius: 0 vars.$borderRadius vars.$borderRadius 0;
+			}
+
+			&.detailRow {
+				td {
+					border-radius: vars.$borderRadius;
+				}
+			}
+		}
+	}
+
+	&__details {
+		&--card {
+			padding: 0 1rem;
+			font-size: 0.8rem;
+		}
+
+		&--info {
+			display: flex;
+			justify-content: space-between;
+			padding: 0.25rem 0;
+
+			&:not(:last-child) {
+				border-bottom: 1px dashed #dee2e6;
+			}
+		}
+	}
+}

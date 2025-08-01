@@ -1,0 +1,34 @@
+@use "./variables" as vars;
+
+ul.pagination {
+	margin-top: 1rem;
+	display: flex;
+	justify-content: end;
+
+	gap: 1.5rem 0.5rem;
+	flex-wrap: wrap;
+
+	li {
+		display: block;
+
+		span,
+		a {
+			text-decoration: none;
+			color: #000;
+			background-color: #fff;
+			line-height: 1.25;
+			border: 1px solid #dee2e6;
+			border-radius: 8px;
+			padding: 0.5rem 0.75rem;
+			font-size: vars.$fontSize;
+		}
+
+		&.active {
+			a {
+				background-color: #343a40 !important;
+				color: #fff !important;
+				border: none;
+			}
+		}
+	}
+}
