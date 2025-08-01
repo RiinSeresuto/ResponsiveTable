@@ -41,25 +41,10 @@ class ResponsiveTable {
 
 		const width = this.container.offsetWidth;
 
-		let visibleColumns = this.priorityMap.length; // Default: show all
-
-		if (width <= 319) {
-			visibleColumns = 1;
-		} else if (width <= 359) {
-			visibleColumns = 2;
-		} else if (width <= 479) {
-			visibleColumns = 3;
-		} else if (width <= 599) {
-			visibleColumns = 4;
-		} else if (width <= 767) {
-			visibleColumns = 5;
-		} else if (width <= 991) {
-			visibleColumns = 6;
-		} else if (width <= 1199) {
-			visibleColumns = 7;
-		} else if (width <= 1439) {
-			visibleColumns = 8;
-		}
+		const breakpoints = [320, 360, 480, 600, 768, 992, 1200, 1440];
+		let visibleColumns =
+			breakpoints.findIndex((bp) => width < bp) + 1 ||
+			this.priorityMap.length;
 
 		const hideCount = Math.max(this.priorityMap.length - visibleColumns, 0);
 
