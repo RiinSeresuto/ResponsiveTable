@@ -40,8 +40,28 @@ class ResponsiveTable {
 		var setupToggleButton = false;
 
 		const width = this.container.offsetWidth;
-		const hideCount =
-			width > 900 ? 0 : width > 700 ? 1 : width > 500 ? 2 : 3;
+
+		let visibleColumns = this.priorityMap.length; // Default: show all
+
+		if (width <= 319) {
+			visibleColumns = 1;
+		} else if (width <= 359) {
+			visibleColumns = 2;
+		} else if (width <= 479) {
+			visibleColumns = 3;
+		} else if (width <= 599) {
+			visibleColumns = 4;
+		} else if (width <= 767) {
+			visibleColumns = 5;
+		} else if (width <= 991) {
+			visibleColumns = 6;
+		} else if (width <= 1199) {
+			visibleColumns = 7;
+		} else if (width <= 1439) {
+			visibleColumns = 8;
+		}
+
+		const hideCount = Math.max(this.priorityMap.length - visibleColumns, 0);
 
 		this.priorityMap.forEach((col, i) => {
 			const shouldHide =
@@ -58,7 +78,7 @@ class ResponsiveTable {
 	addButton() {
 		const buttonCell = document.querySelectorAll('td[tabindex="0"]');
 		const icon =
-			'<i data-lucide="circle-plus" class="responsivetable--icon"></i>';
+			'<i data-lucide="circle-plus" class="responsive-table--icon"></i>';
 
 		buttonCell.forEach((cell) => {
 			const id = nanoid();
@@ -68,9 +88,9 @@ class ResponsiveTable {
 			if (!attribute) {
 				cell.setAttribute("data-toggle", true);
 				cell.innerHTML = `
-					<div class='responsivetable--leadingcolumn-container'>
+					<div class='responsive-table--leadingcolumn-container'>
 						<span data-id="${id}">${icon}</span>
-						<div class="responsivetable--leadingcolumn-content">${htmlContent}</div>
+						<div class="responsive-table--leadingcolumn-content">${htmlContent}</div>
 					</div>`;
 			}
 
@@ -99,7 +119,7 @@ class ResponsiveTable {
 				if (attribute) {
 					cell.removeAttribute("data-toggle");
 					cell.innerHTML = cell.querySelector(
-						".responsivetable--leadingcolumn-content"
+						".responsive-table--leadingcolumn-content"
 					).innerHTML;
 
 					this.removeDetailsRow(id);
@@ -147,11 +167,11 @@ class ResponsiveTable {
 				var label = cell.getAttribute("data-label") || "";
 				var content = cell.innerHTML;
 
-				contentLine += `<div class="responsivetable__details--info"><div><strong>${label}</strong></div> <div>${content}</div></div>`;
+				contentLine += `<div class="responsive-table__details--info"><div><strong>${label}</strong></div> <div>${content}</div></div>`;
 			}
 		});
 
-		return `<div class="responsivetable__details--card">${contentLine}</div>`;
+		return `<div class="responsive-table__details--card">${contentLine}</div>`;
 	}
 
 	toggleColumn(index, hide) {
@@ -177,14 +197,14 @@ class ResponsiveTable {
 			element.removeChild(element.firstChild);
 
 			element.innerHTML =
-				'<i data-lucide="circle-minus" class="responsivetable--icon"></i>';
+				'<i data-lucide="circle-minus" class="responsive-table--icon"></i>';
 
 			this.generateIcon();
 		} else {
 			element.removeChild(element.firstChild);
 
 			element.innerHTML =
-				'<i data-lucide="circle-plus" class="responsivetable--icon"></i>';
+				'<i data-lucide="circle-plus" class="responsive-table--icon"></i>';
 
 			this.generateIcon();
 		}

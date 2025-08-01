@@ -7,11 +7,13 @@
 	}
 }
 
-.responsivetable {
+.responsive-table {
 	width: 100%;
 	border-collapse: separate;
 	border-spacing: 0 0.5rem;
 	font-family: "Open Sans", sans-serif;
+	word-break: break-word;
+	table-layout: auto;
 
 	.hide {
 		display: none;
@@ -39,6 +41,7 @@
 		line-height: 21px;
 		color: vars.$fontColor;
 		padding: 0.5rem 1rem !important;
+		white-space: normal;
 
 		a {
 			font-size: vars.$fontSize;
